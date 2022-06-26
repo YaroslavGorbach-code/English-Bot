@@ -1,0 +1,40 @@
+package yaroslavgorbach.english_bot.base
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import yaroslavgorbach.english_bot.core.UiMessage
+import yaroslavgorbach.english_bot.core.UiMessageManager
+
+abstract class BaseViewModel<State, Action, Message> : ViewModel() {
+
+    protected val uiMessageManager: UiMessageManager<Message> = UiMessageManager()
+
+    protected val pendingActions = MutableSharedFlow<Action>()
+
+    protected val _state: MutableStateFlow<State?> = MutableStateFlow(null)
+
+    val state: StateFlow<State?>
+        get() = _state
+
+    init {
+        viewModelScope.launch {
+            uiMessageManager.message.filterNotNull().collect(::onNewUiMessage)
+        }
+    }
+
+    fun submitAction(action: Action) {
+        viewModelScope.launch {
+            pendingActions.emit(action)
+        }
+    }
+
+    fun clearMessage(id: Long) {
+        viewModelScope.launch {
+            uiMessageManager.clearMessage(id)
+        }
+    }
+
+    abstract fun onNewUiMessage(message: UiMessage<Message>)
+}
