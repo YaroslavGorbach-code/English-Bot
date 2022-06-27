@@ -20,6 +20,7 @@ data class Message(
 
     data class Content(
         val text: String,
-        val answerVariants: List<AnswerVariant>
+        val answerVariants: List<AnswerVariant>?,
+        val wordsToUse: String?
     )
 }
