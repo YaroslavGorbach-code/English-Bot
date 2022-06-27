@@ -10,9 +10,6 @@ import yaroslavgorbach.english_bot.feature.bots.model.BotsUiMessage
 class BotsViewModel : BaseViewModel<BotsState, BotsAction, BotsUiMessage>() {
 
     override fun onNewUiMessage(message: UiMessage<BotsUiMessage>) {
-        _state.update { state ->
-            state?.copy(message = message)
-        }
+        _state.update { state -> state?.copy(message = message) }
     }
-
 }
