@@ -20,7 +20,6 @@ import yaroslavgorbach.english_bot.feature.common.ui.Title
 
 @Composable
 fun BotsScreen(onBack: () -> Unit) {
-    Log.i("dssdsd", "dssd")
     BotsScreen(
         viewModel = hiltViewModel(),
         onBack = onBack
@@ -49,7 +48,6 @@ internal fun BotsScreen(
     onBack: () -> Unit,
     clearMessage: (id: Long) -> Unit
 ) {
-
     state.message?.let { message -> }
 
     Column(modifier = Modifier.fillMaxSize()) {
