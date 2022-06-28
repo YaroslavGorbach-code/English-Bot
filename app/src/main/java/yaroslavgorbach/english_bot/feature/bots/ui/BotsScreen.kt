@@ -3,15 +3,19 @@ package yaroslavgorbach.english_bot.feature.bots.ui
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.feature.bots.model.BotsAction
 import yaroslavgorbach.english_bot.feature.bots.model.BotsState
 import yaroslavgorbach.english_bot.feature.bots.presentation.BotsViewModel
+import yaroslavgorbach.english_bot.feature.common.ui.Subtitle
 import yaroslavgorbach.english_bot.feature.common.ui.Title
 
 @Composable
@@ -47,8 +51,17 @@ internal fun BotsScreen(
 ) {
 
     state.message?.let { message -> }
+
     Column(modifier = Modifier.fillMaxSize()) {
-        Title(text = stringResource(id = R.string.available_bots))
+        Title(
+            text = stringResource(id = R.string.available_bots),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Subtitle(
+            text = stringResource(id = R.string.bots_subtitle),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        )
     }
 }
 
