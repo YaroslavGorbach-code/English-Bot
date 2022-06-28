@@ -7,15 +7,15 @@ import kotlinx.coroutines.launch
 import yaroslavgorbach.english_bot.core.UiMessage
 import yaroslavgorbach.english_bot.core.UiMessageManager
 
-abstract class BaseViewModel<State, Action, Message> : ViewModel() {
+abstract class BaseViewModel<State, Action, Message>(initialState: State) : ViewModel() {
 
     protected val uiMessageManager: UiMessageManager<Message> = UiMessageManager()
 
     protected val pendingActions = MutableSharedFlow<Action>()
 
-    protected val _state: MutableStateFlow<State?> = MutableStateFlow(null)
+    protected val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
-    val state: StateFlow<State?>
+    val state: StateFlow<State>
         get() = _state
 
     init {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">english_bot</string>
+    <string name="available_bots">Available bots</string>
 </resources>
