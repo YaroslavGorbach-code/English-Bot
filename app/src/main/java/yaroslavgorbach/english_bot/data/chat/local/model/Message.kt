@@ -1,4 +1,4 @@
-package yaroslavgorbach.english_bot.data.chat.local
+package yaroslavgorbach.english_bot.data.chat.local.model
 
 import androidx.room.Embedded
 import androidx.room.Entity

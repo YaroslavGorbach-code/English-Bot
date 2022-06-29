@@ -3,7 +3,7 @@ package yaroslavgorbach.english_bot.data.common.convertors
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import yaroslavgorbach.english_bot.data.chat.local.MessageType
+import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
 
 object MessageTypeConverter {
     @TypeConverter
