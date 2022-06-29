@@ -19,7 +19,7 @@ import yaroslavgorbach.english_bot.feature.common.ui.Subtitle
 import yaroslavgorbach.english_bot.feature.common.ui.Title
 
 @Composable
-fun BotsScreen(onBack: () -> Unit) {
+fun BotsScreen(onBack: () -> Unit, navigateToChat: ()-> Unit) {
     BotsScreen(
         viewModel = hiltViewModel(),
         onBack = onBack
@@ -40,7 +40,6 @@ internal fun BotsScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BotsScreen(
     state: BotsState,

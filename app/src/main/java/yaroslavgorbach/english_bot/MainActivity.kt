@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import yaroslavgorbach.english_bot.feature.bots.ui.BotsScreen
 import yaroslavgorbach.english_bot.feature.common.ui.theme.AppTheme
 
 @AndroidEntryPoint
@@ -21,9 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BotsScreen {
-
-                    }
+                    AppNavigation(navController = rememberNavController())
                 }
             }
         }
