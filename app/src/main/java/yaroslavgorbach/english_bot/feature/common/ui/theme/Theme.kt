@@ -5,11 +5,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColorScheme()
 
-private val LightColorPalette = lightColorScheme()
+private val LightColorPalette = lightColorScheme(
+    background = Color(0xFFF8F8F8),
+    surfaceVariant = Color(0xFFFFFFFF)
+)
 
 @Composable
 fun AppTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
