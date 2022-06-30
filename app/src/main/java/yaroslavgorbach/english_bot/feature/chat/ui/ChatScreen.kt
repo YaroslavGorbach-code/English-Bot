@@ -63,7 +63,7 @@ internal fun ChatScreen(
             items(state.messages) { message ->
                 when (message.messageType) {
                     MessageType.BOT -> {
-                        MessageFromBotUi(message = message)
+                        MessageFromBotUi(message = message, state.botName)
                     }
                     MessageType.ME -> {
 
