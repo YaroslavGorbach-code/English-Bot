@@ -26,9 +26,9 @@ fun MessageFromBotUi(message: Message, botName: BotName) {
     Column {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .wrapContentHeight()
-                .padding(end = 50.dp, start = 16.dp, top = 16.dp),
+                .padding(end = 50.dp, start = 16.dp, top = 12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             shape = RoundedCornerShape(
                 topStart = 50f,
@@ -40,9 +40,9 @@ fun MessageFromBotUi(message: Message, botName: BotName) {
             Text(
                 style = MaterialTheme.typography.displayMedium,
                 text = message.content.text,
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(12.dp),
                 color = messageTextColor(),
-                fontSize = 18.sp
+                fontSize = 16.sp
             )
         }
         Row {

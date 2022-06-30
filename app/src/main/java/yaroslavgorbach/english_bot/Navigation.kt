@@ -83,7 +83,7 @@ private fun NavGraphBuilder.addChat(
             })
     ) { backStackEntry ->
         ChatScreen {
-
+            navController.popBackStack()
         }
     }
 }
