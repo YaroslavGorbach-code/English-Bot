@@ -8,8 +8,9 @@ val Blue700 = Color(0xFF6E58F3)
 val Blue400 = Color(0xFF9181F2)
 val Blue200 = Color(0xFFA396F1)
 val Pink200 = Color(0xFFE040FB)
-val LightBlue = Color(0xFF304FFE)
+val LightBlue = Color(0xFF4197E3)
 val LightGray = Color(0xFF9F9F9F)
+val Yellow = Color(0xFFFFF200)
 
 @Composable
 fun subtitleColor(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {

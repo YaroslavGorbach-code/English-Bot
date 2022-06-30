@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -17,17 +16,20 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import yaroslavgorbach.english_bot.data.bots.local.model.Bot
+import yaroslavgorbach.english_bot.feature.common.ui.theme.Yellow
 import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
+import yaroslavgorbach.english_bot.utills.clickableSingle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BotUi(bot: Bot) {
+fun BotUi(bot: Bot, onBot: () -> Unit) {
     Card(
         shape = MaterialTheme.shapes.extraLarge,
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp)
-            .padding(start = 24.dp, end = 24.dp, top = 16.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 16.dp)
+            .clickableSingle { onBot() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
@@ -35,7 +37,7 @@ fun BotUi(bot: Bot) {
                 Icon(
                     Icons.Default.EmojiEvents,
                     contentDescription = "",
-                    tint = Color.Yellow,
+                    tint = Yellow,
                     modifier = Modifier
                         .padding(8.dp)
                         .align(End)

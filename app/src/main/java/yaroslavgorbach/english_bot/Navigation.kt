@@ -1,15 +1,14 @@
 package yaroslavgorbach.english_bot
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import kotlinx.coroutines.InternalCoroutinesApi
 import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.feature.bots.ui.BotsScreen
+import yaroslavgorbach.english_bot.feature.chat.ui.ChatScreen
 
 const val BOT_NAME_ARG = "PUZZLE_NAME_ARG"
 
@@ -62,10 +61,16 @@ private fun NavGraphBuilder.addBots(
     root: Screen,
 ) {
     composable(LeafScreen.Bots.createRoute(root)) {
-        BotsScreen(onBack = {}, navigateToChat = {})
+        BotsScreen(onBack = {}, navigateToChat = { name ->
+            navController.navigate(
+                LeafScreen.Chat.createRoute(
+                    root = root,
+                    botName = name
+                )
+            )
+        })
     }
 }
-
 
 private fun NavGraphBuilder.addChat(
     navController: NavController,
@@ -77,9 +82,9 @@ private fun NavGraphBuilder.addChat(
                 type = NavType.EnumType(BotName::class.java)
             })
     ) { backStackEntry ->
-//        PuzzleUi {
-//            navController.popBackStack()
-//        }
+        ChatScreen {
+
+        }
     }
 }
 
