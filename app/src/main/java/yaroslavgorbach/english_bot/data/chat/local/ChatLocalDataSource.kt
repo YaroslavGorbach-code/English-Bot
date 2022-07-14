@@ -25,7 +25,55 @@ class ChatLocalDataSourceImp : ChatLocalDataSource {
                     order = 1,
                     messageType = MessageType.ME,
                     content = Message.Content("Test responce from me", emptyList(), null)
-                )
+                ),
+                Message(
+                    id = 1,
+                    order = 0,
+                    messageType = MessageType.BOT,
+                    content = Message.Content("Test message from bot", emptyList(), null)
+                ),
+                Message(
+                    id = 2,
+                    order = 1,
+                    messageType = MessageType.ME,
+                    content = Message.Content("Test responce from me", emptyList(), null)
+                ),
+                Message(
+                    id = 1,
+                    order = 0,
+                    messageType = MessageType.BOT,
+                    content = Message.Content("Test message from bot", emptyList(), null)
+                ),
+                Message(
+                    id = 2,
+                    order = 1,
+                    messageType = MessageType.ME,
+                    content = Message.Content("Test responce from me", emptyList(), null)
+                ),
+                Message(
+                    id = 1,
+                    order = 0,
+                    messageType = MessageType.BOT,
+                    content = Message.Content("Test message from bot", emptyList(), null)
+                ),
+                Message(
+                    id = 2,
+                    order = 1,
+                    messageType = MessageType.ME,
+                    content = Message.Content("Test responce from me", emptyList(), null)
+                ),
+                Message(
+                    id = 1,
+                    order = 0,
+                    messageType = MessageType.BOT,
+                    content = Message.Content("Test message from bot", emptyList(), null)
+                ),
+                Message(
+                    id = 2,
+                    order = 1,
+                    messageType = MessageType.ME,
+                    content = Message.Content("Test responce from me", emptyList(), null)
+                ),
             )
         )
     }

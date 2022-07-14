@@ -7,7 +7,8 @@ import yaroslavgorbach.english_bot.data.common.model.BotName
 data class ChatState(
     val botName: BotName,
     val message: UiMessage<ChatUiMessage>?,
-    val messages: List<Message>
+    val messages: List<Message>,
+    val typedValue: String = ""
 ) {
     companion object {
         val Empty = ChatState(

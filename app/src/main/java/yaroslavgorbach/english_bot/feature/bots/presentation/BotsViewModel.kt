@@ -34,4 +34,10 @@ class BotsViewModel @Inject constructor(
             }
         }
     }
+
+    override fun onNewAction(action: BotsAction) {
+        when(action){
+
+        }
+    }
 }

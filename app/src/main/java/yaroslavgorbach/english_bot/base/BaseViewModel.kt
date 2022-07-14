@@ -20,6 +20,10 @@ abstract class BaseViewModel<State, Action, Message>(initialState: State) : View
 
     init {
         viewModelScope.launch {
+            pendingActions.collect(::onNewAction)
+        }
+
+        viewModelScope.launch {
             uiMessageManager.message.filterNotNull().collect(::onNewUiMessage)
         }
     }
@@ -35,6 +39,8 @@ abstract class BaseViewModel<State, Action, Message>(initialState: State) : View
             uiMessageManager.clearMessage(id)
         }
     }
+
+    protected abstract fun onNewAction(action: Action)
 
     abstract fun onNewUiMessage(message: UiMessage<Message>)
 }
