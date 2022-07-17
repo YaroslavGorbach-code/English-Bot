@@ -1,80 +1,21 @@
 package yaroslavgorbach.english_bot.data.chat.local
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import yaroslavgorbach.english_bot.data.chat.dao.ChatDao
 import yaroslavgorbach.english_bot.data.chat.local.model.Message
-import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
 import yaroslavgorbach.english_bot.data.common.model.BotName
 
 interface ChatLocalDataSource {
     fun getMessages(name: BotName): Flow<List<Message>>
+    suspend fun saveMessage(message: Message)
 }
 
-class ChatLocalDataSourceImp : ChatLocalDataSource {
+class ChatLocalDataSourceImp(private val chatDao: ChatDao) : ChatLocalDataSource {
     override fun getMessages(name: BotName): Flow<List<Message>> {
-        return flowOf(
-            listOf(
-                Message(
-                    id = 1,
-                    order = 0,
-                    messageType = MessageType.BOT,
-                    content = Message.Content("Test message from bot", emptyList(), null)
-                ),
-                Message(
-                    id = 2,
-                    order = 1,
-                    messageType = MessageType.ME,
-                    content = Message.Content("Test responce from me", emptyList(), null)
-                ),
-                Message(
-                    id = 1,
-                    order = 0,
-                    messageType = MessageType.BOT,
-                    content = Message.Content("Test message from bot", emptyList(), null)
-                ),
-                Message(
-                    id = 2,
-                    order = 1,
-                    messageType = MessageType.ME,
-                    content = Message.Content("Test responce from me", emptyList(), null)
-                ),
-                Message(
-                    id = 1,
-                    order = 0,
-                    messageType = MessageType.BOT,
-                    content = Message.Content("Test message from bot", emptyList(), null)
-                ),
-                Message(
-                    id = 2,
-                    order = 1,
-                    messageType = MessageType.ME,
-                    content = Message.Content("Test responce from me", emptyList(), null)
-                ),
-                Message(
-                    id = 1,
-                    order = 0,
-                    messageType = MessageType.BOT,
-                    content = Message.Content("Test message from bot", emptyList(), null)
-                ),
-                Message(
-                    id = 2,
-                    order = 1,
-                    messageType = MessageType.ME,
-                    content = Message.Content("Test responce from me", emptyList(), null)
-                ),
-                Message(
-                    id = 1,
-                    order = 0,
-                    messageType = MessageType.BOT,
-                    content = Message.Content("Test message from bot", emptyList(), null)
-                ),
-                Message(
-                    id = 2,
-                    order = 1,
-                    messageType = MessageType.ME,
-                    content = Message.Content("Test responce from me", emptyList(), null)
-                ),
-            )
-        )
+        return chatDao.getMessages(name)
+    }
+
+    override suspend fun saveMessage(message: Message) {
+        return chatDao.insertMessage(message)
     }
 }

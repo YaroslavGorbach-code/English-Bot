@@ -6,4 +6,5 @@ import yaroslavgorbach.english_bot.data.common.model.BotName
 
 interface ChatRepo {
     fun getMessages(botName: BotName): Flow<List<Message>>
+    suspend fun saveMessage(message: Message)
 }

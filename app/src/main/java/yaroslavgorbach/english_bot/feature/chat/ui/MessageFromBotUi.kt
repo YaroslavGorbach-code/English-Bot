@@ -73,6 +73,7 @@ fun PuzzlePreview() {
             message = Message(
                 0,
                 2,
+                BotName.GAME_OF_THRONES,
                 MessageType.ME,
                 Message.Content("test", emptyList(), "")
             ),

@@ -3,8 +3,10 @@ package yaroslavgorbach.english_bot.feature.chat.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import yaroslavgorbach.english_bot.BOT_NAME_ARG
 import yaroslavgorbach.english_bot.base.BaseViewModel
 import yaroslavgorbach.english_bot.core.UiMessage

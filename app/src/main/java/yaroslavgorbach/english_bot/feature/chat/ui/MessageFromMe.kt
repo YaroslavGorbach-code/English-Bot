@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import yaroslavgorbach.english_bot.data.chat.local.model.Message
 import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
+import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.feature.common.ui.theme.LightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,6 +53,7 @@ fun MessageFromMePreview() {
             message = Message(
                 0,
                 2,
+                BotName.GAME_OF_THRONES,
                 MessageType.ME,
                 Message.Content("test", emptyList(), "")
             ),

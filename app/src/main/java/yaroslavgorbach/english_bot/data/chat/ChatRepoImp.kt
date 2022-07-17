@@ -9,4 +9,8 @@ class ChatRepoImp(private val localDataSource: ChatLocalDataSource) : ChatRepo {
     override fun getMessages(botName: BotName): Flow<List<Message>> {
         return localDataSource.getMessages(botName)
     }
+
+    override suspend fun saveMessage(message: Message) {
+        localDataSource.saveMessage(message)
+    }
 }
