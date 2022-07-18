@@ -76,7 +76,12 @@ internal fun ChatScreen(
             items(state.messages) { message ->
                 when (message.type) {
                     MessageType.BOT -> {
-                        MessageFromBotUi(message = message, state.botName)
+                        MessageFromBotUi(
+                            message = message,
+                            botName = state.botName,
+                            onVariantChosen = { text, id ->
+                                actioner(ChatActions.ChooseAnswerVariant(text, id))
+                            })
                     }
                     MessageType.ME -> {
                         MessageFromMeUi(message = message)

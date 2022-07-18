@@ -10,9 +10,14 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
     private val _question = MutableSharedFlow<ChatMessage>(replay = 0)
     val question: SharedFlow<ChatMessage> = _question
 
+    private val _answer = MutableSharedFlow<String>(replay = 0)
+    val answer: SharedFlow<String> = _answer
+
     private val questions: List<ChatMessage> = botQuestionsFactory.create()
 
-    suspend fun acceptAnswer(answer: String, questionId: Int) {
+    suspend fun answer(answer: String, questionId: Int) {
+        _answer.emit(answer)
+
         when (val currentQuestion = questions.find { it.id == questionId }) {
             is ChatMessage.Text -> {
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])

@@ -14,7 +14,7 @@ enum class ContentType {
 
 @Entity
 data class MessageEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val order: Int = 0,
     val botName: BotName,

@@ -13,13 +13,19 @@ class GameOfThronesFactory : BotQuestionsFactory {
                 text = "Have you watched game of thrones?",
                 variants = listOf(
                     ChatMessage.WithVariants.Variant("Yes", 1),
-                    ChatMessage.WithVariants.Variant("No", 2),
+                    ChatMessage.WithVariants.Variant("No", 4),
                 )
             ),
             ChatMessage.Text(
                 id = 1,
                 botName = BotName.GAME_OF_THRONES,
                 nextId = 2, "Tell me what this series is about?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 2,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 3, "Would you like to live in that world",
                 type = MessageType.BOT
             ),
         )

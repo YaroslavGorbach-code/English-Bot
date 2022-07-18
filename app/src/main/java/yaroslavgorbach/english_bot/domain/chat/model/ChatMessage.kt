@@ -22,7 +22,7 @@ sealed class ChatMessage(
     }
 
     data class Text(
-        override val id: Int,
+        override val id: Int = 0,
         override val botName: BotName,
         val nextId: Int = 0,
         val text: String,

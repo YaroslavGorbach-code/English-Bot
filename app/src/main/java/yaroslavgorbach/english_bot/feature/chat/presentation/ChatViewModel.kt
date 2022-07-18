@@ -1,10 +1,8 @@
 package yaroslavgorbach.english_bot.feature.chat.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import yaroslavgorbach.english_bot.BOT_NAME_ARG
@@ -15,6 +13,8 @@ import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.domain.chat.BotEngine
 import yaroslavgorbach.english_bot.domain.chat.factory.BotQuestionsAbstractFactory
 import yaroslavgorbach.english_bot.domain.chat.factory.BotQuestionsFactory
+import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
 import yaroslavgorbach.english_bot.feature.chat.model.ChatState
 import yaroslavgorbach.english_bot.feature.chat.model.ChatUiMessage
@@ -38,6 +38,7 @@ class ChatViewModel @Inject constructor(
 
     init {
         observeNewBotQuestion()
+        observeMyAnswers()
         updateBotName()
         getMessages()
     }
@@ -48,6 +49,24 @@ class ChatViewModel @Inject constructor(
                 chatRepo.saveMessage(newQuestion)
             }
         }
+    }
+
+    private fun observeMyAnswers() {
+        viewModelScope.launch {
+            botEngine.answer.collect { answer ->
+                saveMyAnswer(answer)
+            }
+        }
+    }
+
+    private suspend fun saveMyAnswer(text: String) {
+        chatRepo.saveMessage(
+            ChatMessage.Text(
+                botName = botName,
+                text = text,
+                type = MessageType.ME
+            )
+        )
     }
 
     override fun onNewUiMessage(message: UiMessage<ChatUiMessage>) {
@@ -86,6 +105,11 @@ class ChatViewModel @Inject constructor(
             }
             ChatActions.SentMessage -> {
 
+            }
+            is ChatActions.ChooseAnswerVariant -> {
+                viewModelScope.launch {
+                    botEngine.answer(action.text, action.questionId)
+                }
             }
         }
     }

@@ -4,10 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val Blue700 = Color(0xFF6E58F3)
-val Blue400 = Color(0xFF9181F2)
-val Blue200 = Color(0xFFA396F1)
-val Pink200 = Color(0xFFE040FB)
 val LightBlue = Color(0xFF4197E3)
 val LightGray = Color(0xFF9F9F9F)
 val DarkGray = Color(0xFF505050)
