@@ -20,12 +20,12 @@ object Convertors {
     fun fromEnumToContentType(value: ContentType) = value.name
 
     @TypeConverter
-    fun restoreList(listOfString: String): List<String> {
-        return Gson().fromJson(listOfString, object : TypeToken<List<String>>() {}.type)
+    fun restoreList(listOfString: String?): List<String>? {
+        return Gson().fromJson(listOfString, object : TypeToken<List<String>?>() {}.type)
     }
 
     @TypeConverter
-    fun saveList(listOfString: List<String>): String {
+    fun saveList(listOfString: List<String>?): String? {
         return Gson().toJson(listOfString)
     }
 }

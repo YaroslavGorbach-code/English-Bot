@@ -109,6 +109,7 @@ class ChatViewModel @Inject constructor(
             is ChatActions.ChooseAnswerVariant -> {
                 viewModelScope.launch {
                     botEngine.answer(action.text, action.questionId)
+                    chatRepo.clearVariants(action.questionId)
                 }
             }
         }

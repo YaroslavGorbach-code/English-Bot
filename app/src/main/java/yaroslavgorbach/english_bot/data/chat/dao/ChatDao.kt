@@ -15,4 +15,7 @@ interface ChatDao {
 
     @Query("SELECT * FROM messageentity WHERE botName = :botName")
     fun getMessages(botName: BotName): Flow<List<MessageEntity>>
+
+    @Query("UPDATE messageentity SET answerVariants = null WHERE id = :id")
+    fun clearVariants(id: Int)
 }

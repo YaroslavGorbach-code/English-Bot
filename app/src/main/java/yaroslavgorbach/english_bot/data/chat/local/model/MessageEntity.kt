@@ -25,8 +25,8 @@ data class MessageEntity(
 
     data class Content(
         val text: String,
-        val answerVariants: List<String> = emptyList(),
-        val wordsToUse: List<String> = emptyList(),
+        val answerVariants: List<String>? = null,
+        val wordsToUse: List<String>? = null,
         val type: ContentType
     )
 }

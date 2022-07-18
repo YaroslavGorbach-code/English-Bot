@@ -57,7 +57,7 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
                     id = input.id,
                     botName = input.botName,
                     text = input.content.text,
-                    mustWords = input.content.wordsToUse
+                    mustWords = input.content.wordsToUse ?: emptyList()
                 )
             }
             ContentType.WITH_ANSWER_VARIANTS -> {
@@ -65,9 +65,10 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
                     id = input.id,
                     botName = input.botName,
                     text = input.content.text,
-                    variants = input.content.answerVariants.map {
+                    variants = input.content.answerVariants?.map {
                         ChatMessage.WithVariants.Variant(it)
-                    })
+                    } ?: emptyList()
+                )
             }
         }
     }
