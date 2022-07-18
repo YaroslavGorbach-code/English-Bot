@@ -3,14 +3,21 @@ package yaroslavgorbach.english_bot.data.common.convertors
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
+import yaroslavgorbach.english_bot.data.chat.local.model.ContentType
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 
-object MessageTypeConverter {
+object Convertors {
     @TypeConverter
-    fun toEnum(value: String) = enumValueOf<MessageType>(value)
+    fun messageTypeToEnum(value: String) = enumValueOf<MessageType>(value)
 
     @TypeConverter
-    fun fromEnum(value: MessageType) = value.name
+    fun fromEnumToMessageType(value: MessageType) = value.name
+
+    @TypeConverter
+    fun contentTypeToEnum(value: String) = enumValueOf<ContentType>(value)
+
+    @TypeConverter
+    fun fromEnumToContentType(value: ContentType) = value.name
 
     @TypeConverter
     fun restoreList(listOfString: String): List<String> {

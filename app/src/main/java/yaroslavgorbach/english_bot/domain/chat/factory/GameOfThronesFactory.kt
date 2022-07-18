@@ -1,19 +1,27 @@
 package yaroslavgorbach.english_bot.domain.chat.factory
 
-import yaroslavgorbach.english_bot.domain.chat.model.BotQuestion
+import yaroslavgorbach.english_bot.data.common.model.BotName
+import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 
 class GameOfThronesFactory : BotQuestionsFactory {
-    override fun create(): List<BotQuestion> {
+    override fun create(): List<ChatMessage> {
         return listOf(
-            BotQuestion.WithVariants(
+            ChatMessage.WithVariants(
                 id = 0,
+                botName = BotName.GAME_OF_THRONES,
                 text = "Have you watched game of thrones?",
                 variants = listOf(
-                    BotQuestion.WithVariants.Variant("Yes", 1),
-                    BotQuestion.WithVariants.Variant("No", 2),
+                    ChatMessage.WithVariants.Variant("Yes", 1),
+                    ChatMessage.WithVariants.Variant("No", 2),
                 )
             ),
-            BotQuestion.Text(id = 1, nextId = 2, "Tell me what this series is about?"),
+            ChatMessage.Text(
+                id = 1,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 2, "Tell me what this series is about?",
+                type = MessageType.BOT
+            ),
         )
     }
 }

@@ -1,5 +1,6 @@
 package yaroslavgorbach.english_bot.feature.chat.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,15 +15,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import yaroslavgorbach.english_bot.R
-import yaroslavgorbach.english_bot.data.chat.local.model.Message
-import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
 import yaroslavgorbach.english_bot.data.common.model.BotName
+import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.common.ui.theme.messageTextColor
 import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageFromBotUi(message: Message, botName: BotName) {
+fun MessageFromBotUi(message: ChatMessage, botName: BotName) {
+
     Column {
         Card(
             modifier = Modifier
@@ -37,13 +39,24 @@ fun MessageFromBotUi(message: Message, botName: BotName) {
                 bottomStart = 0f
             )
         ) {
-            Text(
-                style = MaterialTheme.typography.displayMedium,
-                text = message.content.text,
-                modifier = Modifier.padding(12.dp),
-                color = messageTextColor(),
-                fontSize = 16.sp
-            )
+            when (message) {
+                is ChatMessage.Text -> {
+                    Text(
+                        style = MaterialTheme.typography.displayMedium,
+                        text = message.text,
+                        modifier = Modifier.padding(12.dp),
+                        color = messageTextColor(),
+                        fontSize = 16.sp
+                    )
+                }
+                is ChatMessage.TextWithMustWords -> {
+
+                }
+                is ChatMessage.WithVariants -> {
+
+                }
+            }
+
         }
         Row {
             Image(
@@ -70,12 +83,12 @@ fun MessageFromBotUi(message: Message, botName: BotName) {
 fun PuzzlePreview() {
     MaterialTheme() {
         MessageFromBotUi(
-            message = Message(
-                0,
-                2,
+            message = ChatMessage.Text(
+                1,
                 BotName.GAME_OF_THRONES,
-                MessageType.ME,
-                Message.Content("test", emptyList(), "")
+                0,
+                "test",
+                MessageType.BOT
             ),
             BotName.GAME_OF_THRONES
         )

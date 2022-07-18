@@ -1,12 +1,12 @@
 package yaroslavgorbach.english_bot.feature.chat.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 import yaroslavgorbach.english_bot.BOT_NAME_ARG
 import yaroslavgorbach.english_bot.base.BaseViewModel
 import yaroslavgorbach.english_bot.core.UiMessage
@@ -34,12 +34,20 @@ class ChatViewModel @Inject constructor(
     private val botQuestionsFactory: BotQuestionsFactory
         get() = botQuestionsAbstractFactory.create(botName)
 
-    private val botEngine: BotEngine
-        get() = BotEngine(botQuestionsFactory)
+    private val botEngine: BotEngine = BotEngine(botQuestionsFactory)
 
     init {
+        observeNewBotQuestion()
         updateBotName()
         getMessages()
+    }
+
+    private fun observeNewBotQuestion() {
+        viewModelScope.launch {
+            botEngine.question.collect { newQuestion ->
+                chatRepo.saveMessage(newQuestion)
+            }
+        }
     }
 
     override fun onNewUiMessage(message: UiMessage<ChatUiMessage>) {
@@ -57,10 +65,15 @@ class ChatViewModel @Inject constructor(
     private fun getMessages() {
         viewModelScope.launch {
             chatRepo.getMessages(botName).collect { messages ->
-                _state.update { state ->
-                    state.copy(messages = messages)
-                }
+                startConversationIfNeeded(messages.isEmpty())
+                _state.update { state -> state.copy(messages = messages) }
             }
+        }
+    }
+
+    private suspend fun startConversationIfNeeded(hasHeed: Boolean) {
+        if (hasHeed) {
+            botEngine.startConversation()
         }
     }
 

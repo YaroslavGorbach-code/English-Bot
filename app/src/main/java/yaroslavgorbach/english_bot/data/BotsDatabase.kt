@@ -4,13 +4,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import yaroslavgorbach.english_bot.data.chat.dao.ChatDao
-import yaroslavgorbach.english_bot.data.chat.local.model.Message
-import yaroslavgorbach.english_bot.data.common.convertors.MessageTypeConverter
+import yaroslavgorbach.english_bot.data.chat.local.model.MessageEntity
+import yaroslavgorbach.english_bot.data.common.convertors.Convertors
 
-@TypeConverters(MessageTypeConverter::class)
+@TypeConverters(Convertors::class)
 @Database(
     exportSchema = true,
-    entities = [Message::class],
+    entities = [MessageEntity::class],
     version = 1
 )
 abstract class BotsDatabase : RoomDatabase() {

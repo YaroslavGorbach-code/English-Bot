@@ -4,17 +4,19 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import yaroslavgorbach.english_bot.data.common.model.BotName
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 
-enum class MessageType {
-    BOT,
-    ME
+enum class ContentType {
+    ONLY_TEXT,
+    WITH_MUST_WORDS,
+    WITH_ANSWER_VARIANTS
 }
 
 @Entity
-data class Message(
+data class MessageEntity(
     @PrimaryKey
-    val id: Int,
-    val order: Int,
+    val id: Int = 0,
+    val order: Int = 0,
     val botName: BotName,
     val messageType: MessageType,
     @Embedded
@@ -23,7 +25,8 @@ data class Message(
 
     data class Content(
         val text: String,
-        val answerVariants: List<String>,
-        val wordsToUse: String?
+        val answerVariants: List<String> = emptyList(),
+        val wordsToUse: List<String> = emptyList(),
+        val type: ContentType
     )
 }

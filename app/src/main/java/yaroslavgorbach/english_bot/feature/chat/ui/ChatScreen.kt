@@ -9,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +18,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import yaroslavgorbach.english_bot.R
-import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
 import yaroslavgorbach.english_bot.feature.chat.model.ChatState
 import yaroslavgorbach.english_bot.feature.chat.presentation.ChatViewModel
@@ -75,7 +74,7 @@ internal fun ChatScreen(
                 .weight(1f)
         ) {
             items(state.messages) { message ->
-                when (message.messageType) {
+                when (message.type) {
                     MessageType.BOT -> {
                         MessageFromBotUi(message = message, state.botName)
                     }

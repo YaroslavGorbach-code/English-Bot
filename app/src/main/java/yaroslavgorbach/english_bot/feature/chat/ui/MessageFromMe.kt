@@ -10,14 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import yaroslavgorbach.english_bot.data.chat.local.model.Message
-import yaroslavgorbach.english_bot.data.chat.local.model.MessageType
 import yaroslavgorbach.english_bot.data.common.model.BotName
+import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
+import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.common.ui.theme.LightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageFromMeUi(message: Message) {
+fun MessageFromMeUi(message: ChatMessage) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier
@@ -34,13 +34,20 @@ fun MessageFromMeUi(message: Message) {
             ),
             colors = CardDefaults.cardColors(containerColor = LightBlue)
         ) {
-            Text(
-                style = MaterialTheme.typography.displayMedium,
-                text = message.content.text,
-                modifier = Modifier.padding(12.dp),
-                color = Color.White,
-                fontSize = 16.sp
-            )
+            when (message) {
+                is ChatMessage.Text -> {
+                    Text(
+                        style = MaterialTheme.typography.displayMedium,
+                        text = message.text,
+                        modifier = Modifier.padding(12.dp),
+                        color = Color.White,
+                        fontSize = 16.sp
+                    )
+                }
+                is ChatMessage.TextWithMustWords -> TODO()
+                is ChatMessage.WithVariants -> TODO()
+            }
+
         }
     }
 }
@@ -50,13 +57,13 @@ fun MessageFromMeUi(message: Message) {
 fun MessageFromMePreview() {
     MaterialTheme {
         MessageFromMeUi(
-            message = Message(
-                0,
-                2,
+            ChatMessage.Text(
+                1,
                 BotName.GAME_OF_THRONES,
-                MessageType.ME,
-                Message.Content("test", emptyList(), "")
-            ),
+                0,
+                "Test",
+                MessageType.ME
+            )
         )
     }
 }
