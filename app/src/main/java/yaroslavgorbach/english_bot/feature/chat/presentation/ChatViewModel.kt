@@ -104,7 +104,11 @@ class ChatViewModel @Inject constructor(
                 }
             }
             ChatActions.SentMessage -> {
-
+                viewModelScope.launch {
+                    val lastFromBot = state.value.messages.findLast { it.type == MessageType.BOT }
+                    botEngine.answer(state.value.typedValue, lastFromBot?.id ?: 0)
+                    uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
+                }
             }
             is ChatActions.ChooseAnswerVariant -> {
                 viewModelScope.launch {

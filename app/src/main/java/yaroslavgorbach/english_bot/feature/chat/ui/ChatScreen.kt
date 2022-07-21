@@ -4,10 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -21,9 +23,11 @@ import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
 import yaroslavgorbach.english_bot.feature.chat.model.ChatState
+import yaroslavgorbach.english_bot.feature.chat.model.ChatUiMessage
 import yaroslavgorbach.english_bot.feature.chat.presentation.ChatViewModel
 import yaroslavgorbach.english_bot.feature.common.ui.Subtitle
 import yaroslavgorbach.english_bot.feature.common.ui.Toolbar
+import yaroslavgorbach.english_bot.utills.clickableSingle
 
 @Composable
 fun ChatScreen(onBack: () -> Unit) {
@@ -54,7 +58,18 @@ internal fun ChatScreen(
     onBack: () -> Unit,
     clearMessage: (id: Long) -> Unit
 ) {
-    state.message?.let { message -> }
+    val chatScrollState = rememberLazyListState()
+
+    state.message?.let { message ->
+        when (message.message) {
+            is ChatUiMessage.ScrollToPosition -> {
+                LaunchedEffect(key1 = message.id, block = {
+                    chatScrollState.animateScrollToItem(message.message.position)
+                    clearMessage(message.id)
+                })
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -69,6 +84,7 @@ internal fun ChatScreen(
                 .padding(horizontal = 16.dp)
         )
         LazyColumn(
+            state = chatScrollState,
             modifier = Modifier
                 .padding(top = 16.dp)
                 .weight(1f)
@@ -126,6 +142,7 @@ private fun InputField(
                     ImageVector.vectorResource(id = R.drawable.ic_sent_message),
                     contentDescription = null,
                     modifier = Modifier
+                        .clickableSingle { actioner(ChatActions.SentMessage) }
                         .align(CenterVertically)
                         .padding(end = 8.dp)
                         .size(35.dp)

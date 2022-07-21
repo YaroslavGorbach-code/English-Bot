@@ -28,6 +28,78 @@ class GameOfThronesFactory : BotQuestionsFactory {
                 nextId = 3, "Would you like to live in that world",
                 type = MessageType.BOT
             ),
+            ChatMessage.Text(
+                id = 3,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 4, "Why explain in details",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 4,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 5, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 5,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 6, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 6,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 7, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 7,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 8, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 8,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 9, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 9,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 10, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 10,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 11, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 11,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 12, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 12,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 13, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 13,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 14, "Do you like it?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.Text(
+                id = 14,
+                botName = BotName.GAME_OF_THRONES,
+                nextId = 15, "Do you like it?",
+                type = MessageType.BOT
+            ),
         )
     }
 }
