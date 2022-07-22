@@ -38,6 +38,7 @@ class ChatViewModel @Inject constructor(
 
     init {
         observeNewBotQuestion()
+        observeBotThinking()
         observeMyAnswers()
         updateBotName()
         getMessages()
@@ -55,6 +56,14 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             botEngine.answer.collect { answer ->
                 saveMyAnswer(answer)
+            }
+        }
+    }
+
+    private fun observeBotThinking() {
+        viewModelScope.launch {
+            botEngine.isThinking.collect { isThinking ->
+                _state.emit(state.value.copy(isThinking = isThinking))
             }
         }
     }

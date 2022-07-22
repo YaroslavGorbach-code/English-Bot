@@ -3,7 +3,7 @@ package yaroslavgorbach.english_bot.feature.chat.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -89,12 +89,13 @@ internal fun ChatScreen(
                 .padding(top = 16.dp)
                 .weight(1f)
         ) {
-            items(state.messages) { message ->
+            itemsIndexed(state.messages) { index, message ->
                 when (message.type) {
                     MessageType.BOT -> {
                         MessageFromBotUi(
                             message = message,
                             botName = state.botName,
+                            isThinking = state.isThinking && index == state.messages.size.dec(),
                             onVariantChosen = { text, id ->
                                 actioner(ChatActions.ChooseAnswerVariant(text, id))
                             })

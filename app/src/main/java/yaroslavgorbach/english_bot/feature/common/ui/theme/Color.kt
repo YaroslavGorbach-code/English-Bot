@@ -6,12 +6,18 @@ import androidx.compose.ui.graphics.Color
 
 val LightBlue = Color(0xFF4197E3)
 val LightGray = Color(0xFF9F9F9F)
+val ExtraLightGray = Color(0xFFE3E3E3)
 val DarkGray = Color(0xFF505050)
 val Yellow = Color(0xFFFFF200)
 
 @Composable
 fun subtitleColor(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {
     return if (isDarkTheme) LightGray else LightGray
+}
+
+@Composable
+fun ThinkAnimationColor(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {
+    return if (isDarkTheme) ExtraLightGray else ExtraLightGray
 }
 
 @Composable

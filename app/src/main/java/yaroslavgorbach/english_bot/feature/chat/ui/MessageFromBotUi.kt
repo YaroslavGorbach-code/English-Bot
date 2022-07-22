@@ -1,23 +1,32 @@
 package yaroslavgorbach.english_bot.feature.chat.ui
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 import yaroslavgorbach.english_bot.domain.chat.model.MessageType
+import yaroslavgorbach.english_bot.feature.common.ui.theme.ThinkAnimationColor
 import yaroslavgorbach.english_bot.feature.common.ui.theme.messageTextColor
 import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 
@@ -25,6 +34,7 @@ import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 @Composable
 fun MessageFromBotUi(
     message: ChatMessage,
+    isThinking: Boolean,
     botName: BotName,
     onVariantChosen: (String, Int) -> Unit
 ) {
@@ -42,26 +52,28 @@ fun MessageFromBotUi(
                 bottomStart = 0f
             )
         ) {
-            when (message) {
-                is ChatMessage.Text -> {
-                    MessageText(
-                        modifier = Modifier.padding(bottom = 12.dp),
-                        message = message.text
-                    )
-                }
-                is ChatMessage.TextWithMustWords -> {
-
-                }
-                is ChatMessage.WithVariants -> {
-                    Column {
-                        MessageText(message = message.text)
-                        Variants(
-                            modifier = Modifier.align(CenterHorizontally),
-                            variants = message.variants,
-                            onVariantClick = { text ->
-                                onVariantChosen(text, message.id)
-                            }
+            if (isThinking.not()) {
+                when (message) {
+                    is ChatMessage.Text -> {
+                        MessageText(
+                            modifier = Modifier.padding(bottom = 12.dp),
+                            message = message.text
                         )
+                    }
+                    is ChatMessage.TextWithMustWords -> {
+
+                    }
+                    is ChatMessage.WithVariants -> {
+                        Column {
+                            MessageText(message = message.text)
+                            Variants(
+                                modifier = Modifier.align(CenterHorizontally),
+                                variants = message.variants,
+                                onVariantClick = { text ->
+                                    onVariantChosen(text, message.id)
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -74,14 +86,70 @@ fun MessageFromBotUi(
                     .size(40.dp)
                     .padding(start = 16.dp)
             )
-            Text(
-                color = subtitleColor(),
-                text = "Bot " + stringResource(id = botName.resId),
-                fontSize = 14.sp,
-                modifier = Modifier
-                    .align(CenterVertically)
-                    .padding(start = 8.dp)
+            if (isThinking) {
+                Thinking(
+                    modifier = Modifier
+                        .align(CenterVertically)
+                        .padding(start = 8.dp)
+                )
+            } else {
+                Text(
+                    color = subtitleColor(),
+                    text = "Bot " + stringResource(id = botName.resId),
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .align(CenterVertically)
+                        .padding(start = 8.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Thinking(modifier: Modifier = Modifier) {
+    val circles = listOf(
+        remember { Animatable(initialValue = 0f) },
+        remember { Animatable(initialValue = 0f) },
+        remember { Animatable(initialValue = 0f) }
+    )
+
+    circles.forEachIndexed { index, animatable ->
+        LaunchedEffect(key1 = animatable, block = {
+            delay(index * 100L)
+            animatable.animateTo(
+                1f, animationSpec = infiniteRepeatable(
+                    animation = keyframes {
+                        durationMillis = 1200
+                        0.0f at 0 with LinearOutSlowInEasing
+                        1.0f at 300 with LinearOutSlowInEasing
+                        0.0f at 600 with LinearOutSlowInEasing
+                        0.0f at 1200 with LinearOutSlowInEasing
+                    },
+                    repeatMode = RepeatMode.Restart
+                )
             )
+        })
+    }
+
+    val circleValues = circles.map { it.value }
+    val distance = with(LocalDensity.current) { 20.dp.toPx() }
+    val lastIndex = 2
+
+    Row(modifier = modifier.wrapContentWidth()) {
+        circleValues.forEachIndexed { index: Int, value: Float ->
+            Box(modifier = Modifier
+                .size(12.dp)
+                .align(CenterVertically)
+                .graphicsLayer { translationY = -value * distance }
+                .background(
+                    color = ThinkAnimationColor(),
+                    shape = CircleShape
+                ))
+
+            if (index != lastIndex) {
+                Spacer(modifier = Modifier.width(4.dp))
+            }
         }
     }
 }
@@ -126,8 +194,9 @@ private fun MessageText(modifier: Modifier = Modifier, message: String) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PuzzlePreview() {
-    MaterialTheme() {
+    MaterialTheme {
         MessageFromBotUi(
+            isThinking = false,
             message = ChatMessage.Text(
                 1,
                 BotName.GAME_OF_THRONES,
@@ -135,10 +204,8 @@ fun PuzzlePreview() {
                 "test",
                 MessageType.BOT
             ),
-            BotName.GAME_OF_THRONES,
-            onVariantChosen = { string, id ->
-
-            }
+            botName = BotName.GAME_OF_THRONES,
+            onVariantChosen = { string, id -> }
         )
     }
 }
