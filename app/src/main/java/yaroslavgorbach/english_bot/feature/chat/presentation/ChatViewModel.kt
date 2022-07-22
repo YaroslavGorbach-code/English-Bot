@@ -63,7 +63,20 @@ class ChatViewModel @Inject constructor(
     private fun observeBotThinking() {
         viewModelScope.launch {
             botEngine.isThinking.collect { isThinking ->
-                _state.emit(state.value.copy(isThinking = isThinking))
+                if (isThinking) {
+                    _state.emit(
+                        state.value.copy(
+                            messages = state.value.messages.toMutableList().apply {
+                                add(ChatMessage.Loading)
+                            })
+                    )
+                } else {
+                    _state.emit(
+                        state.value.copy(
+                            messages = state.value.messages.filterIsInstance<ChatMessage.Loading>()
+                        )
+                    )
+                }
             }
         }
     }

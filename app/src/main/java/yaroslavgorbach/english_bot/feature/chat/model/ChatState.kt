@@ -8,7 +8,6 @@ data class ChatState(
     val botName: BotName,
     val message: UiMessage<ChatUiMessage>?,
     val messages: List<ChatMessage>,
-    val isThinking: Boolean = false,
     val typedValue: String = ""
 ) {
     companion object {

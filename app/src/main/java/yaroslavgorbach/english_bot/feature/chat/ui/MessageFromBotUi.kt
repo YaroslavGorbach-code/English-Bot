@@ -34,7 +34,6 @@ import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 @Composable
 fun MessageFromBotUi(
     message: ChatMessage,
-    isThinking: Boolean,
     botName: BotName,
     onVariantChosen: (String, Int) -> Unit
 ) {
@@ -52,7 +51,6 @@ fun MessageFromBotUi(
                 bottomStart = 0f
             )
         ) {
-            if (isThinking.not()) {
                 when (message) {
                     is ChatMessage.Text -> {
                         MessageText(
@@ -75,33 +73,38 @@ fun MessageFromBotUi(
                             )
                         }
                     }
+                    ChatMessage.Loading -> {}
                 }
-            }
         }
-        Row {
-            Image(
-                ImageVector.vectorResource(id = R.drawable.ic_bot),
-                contentDescription = null,
+        BotName(botName, message is ChatMessage.Loading)
+    }
+}
+
+@Composable
+private fun BotName(botName: BotName, isThinking: Boolean) {
+    Row {
+        Image(
+            ImageVector.vectorResource(id = R.drawable.ic_bot),
+            contentDescription = null,
+            modifier = Modifier
+                .size(40.dp)
+                .padding(start = 16.dp)
+        )
+        if (isThinking) {
+            Thinking(
                 modifier = Modifier
-                    .size(40.dp)
-                    .padding(start = 16.dp)
+                    .align(CenterVertically)
+                    .padding(start = 8.dp)
             )
-            if (isThinking) {
-                Thinking(
-                    modifier = Modifier
-                        .align(CenterVertically)
-                        .padding(start = 8.dp)
-                )
-            } else {
-                Text(
-                    color = subtitleColor(),
-                    text = "Bot " + stringResource(id = botName.resId),
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .align(CenterVertically)
-                        .padding(start = 8.dp)
-                )
-            }
+        } else {
+            Text(
+                color = subtitleColor(),
+                text = "Bot " + stringResource(id = botName.resId),
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .align(CenterVertically)
+                    .padding(start = 8.dp)
+            )
         }
     }
 }
@@ -196,7 +199,6 @@ private fun MessageText(modifier: Modifier = Modifier, message: String) {
 fun PuzzlePreview() {
     MaterialTheme {
         MessageFromBotUi(
-            isThinking = false,
             message = ChatMessage.Text(
                 1,
                 BotName.GAME_OF_THRONES,

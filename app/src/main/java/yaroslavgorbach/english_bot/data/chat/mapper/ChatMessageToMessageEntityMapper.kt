@@ -39,6 +39,9 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
                     )
                 )
             }
+            ChatMessage.Loading -> {
+                error("Can not map ChatMessage.Loading to entity")
+            }
         }
     }
 

@@ -25,6 +25,7 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
 
     suspend fun answer(answer: String, questionId: Int) {
         _answer.emit(answer)
+        think(TIME_TO_THINK)
         when (val currentQuestion = questions.find { it.id == questionId }) {
             is ChatMessage.Text -> {
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])
@@ -37,11 +38,10 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
                 val nextQuestion = questions[questions.indexOfFirst { it.id == nextId }]
                 _question.emit(nextQuestion)
             }
-            null -> {
+            else -> {
                 throw Exception("Can not find a question with id $questionId")
             }
         }
-        think(TIME_TO_THINK)
     }
 
     suspend fun startConversation() {
@@ -50,7 +50,7 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
     }
 
     private suspend fun think(time: Long){
-        delay(10)
+        delay(300)
         _isThinking.emit(true)
         delay(time)
         _isThinking.emit(false)

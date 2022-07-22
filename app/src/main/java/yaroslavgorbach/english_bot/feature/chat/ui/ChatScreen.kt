@@ -95,7 +95,6 @@ internal fun ChatScreen(
                         MessageFromBotUi(
                             message = message,
                             botName = state.botName,
-                            isThinking = state.isThinking && index == state.messages.size.dec(),
                             onVariantChosen = { text, id ->
                                 actioner(ChatActions.ChooseAnswerVariant(text, id))
                             })
