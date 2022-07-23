@@ -70,6 +70,7 @@ class ChatViewModel @Inject constructor(
                                 add(ChatMessage.Loading)
                             })
                     )
+                    uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
                 } else {
                     _state.emit(
                         state.value.copy(
@@ -108,6 +109,7 @@ class ChatViewModel @Inject constructor(
             chatRepo.getMessages(botName).collect { messages ->
                 startConversationIfNeeded(messages.isEmpty())
                 _state.update { state -> state.copy(messages = messages) }
+                uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
             }
         }
     }
@@ -129,7 +131,6 @@ class ChatViewModel @Inject constructor(
                 viewModelScope.launch {
                     val lastFromBot = state.value.messages.findLast { it.type == MessageType.BOT }
                     botEngine.answer(state.value.typedValue, lastFromBot?.id ?: 0)
-                    uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
                 }
             }
             is ChatActions.ChooseAnswerVariant -> {

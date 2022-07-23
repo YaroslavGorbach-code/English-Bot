@@ -91,7 +91,6 @@ internal fun ChatScreen(
                 .weight(1f)
         ) {
             items(state.messages, key = { item -> item.id }) { message ->
-                Log.i("dssdds", message.id.toString())
                 when (message.type) {
                     MessageType.BOT -> {
                         MessageFromBotUi(
