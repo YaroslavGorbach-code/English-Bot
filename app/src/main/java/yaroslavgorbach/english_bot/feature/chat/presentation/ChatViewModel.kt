@@ -73,7 +73,7 @@ class ChatViewModel @Inject constructor(
                 } else {
                     _state.emit(
                         state.value.copy(
-                            messages = state.value.messages.filterIsInstance<ChatMessage.Loading>()
+                            messages = state.value.messages.filterNot { it is ChatMessage.Loading }
                         )
                     )
                 }

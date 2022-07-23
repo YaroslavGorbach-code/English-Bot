@@ -1,9 +1,10 @@
 package yaroslavgorbach.english_bot.feature.chat.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -89,7 +90,8 @@ internal fun ChatScreen(
                 .padding(top = 16.dp)
                 .weight(1f)
         ) {
-            itemsIndexed(state.messages) { index, message ->
+            items(state.messages, key = { item -> item.id }) { message ->
+                Log.i("dssdds", message.id.toString())
                 when (message.type) {
                     MessageType.BOT -> {
                         MessageFromBotUi(

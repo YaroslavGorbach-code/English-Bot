@@ -54,5 +54,6 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
         _isThinking.emit(true)
         delay(time)
         _isThinking.emit(false)
+        delay(150)
     }
 }

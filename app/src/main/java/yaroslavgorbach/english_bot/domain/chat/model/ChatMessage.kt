@@ -37,5 +37,5 @@ sealed class ChatMessage(
         val mustWords: List<String>,
     ) : ChatMessage(id, botName, MessageType.BOT)
 
-    object Loading : ChatMessage(0, BotName.GAME_OF_THRONES, MessageType.BOT)
+    object Loading : ChatMessage(-1, BotName.GAME_OF_THRONES, MessageType.BOT)
 }
