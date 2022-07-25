@@ -7,5 +7,5 @@ import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 interface ChatRepo {
     fun getMessages(botName: BotName): Flow<List<ChatMessage>>
     suspend fun saveMessage(message: ChatMessage)
-    suspend fun clearVariants(messageId: Int)
+    suspend fun clearVariants(messageId: String)
 }

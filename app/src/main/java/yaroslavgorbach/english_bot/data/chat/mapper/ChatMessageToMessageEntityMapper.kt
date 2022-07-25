@@ -12,6 +12,7 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
         return when (input) {
             is ChatMessage.Text -> {
                 MessageEntity(
+                    id = input.id,
                     botName = input.botName,
                     messageType = input.type,
                     content = MessageEntity.Content(text = input.text, type = ContentType.ONLY_TEXT)
@@ -19,6 +20,7 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
             }
             is ChatMessage.TextWithMustWords -> {
                 MessageEntity(
+                    id = input.id,
                     botName = input.botName,
                     messageType = MessageType.BOT,
                     content = MessageEntity.Content(
@@ -30,6 +32,7 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
             }
             is ChatMessage.WithVariants -> {
                 MessageEntity(
+                    id = input.id,
                     botName = input.botName,
                     messageType = MessageType.BOT,
                     content = MessageEntity.Content(
@@ -52,7 +55,8 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
                     id = input.id,
                     botName = input.botName,
                     text = input.content.text,
-                    type = input.messageType
+                    type = input.messageType,
+                    nextId = "0"
                 )
             }
             ContentType.WITH_MUST_WORDS -> {
@@ -60,7 +64,8 @@ class ChatMessageToMessageEntityMapper : Mapper<ChatMessage, MessageEntity> {
                     id = input.id,
                     botName = input.botName,
                     text = input.content.text,
-                    mustWords = input.content.wordsToUse ?: emptyList()
+                    mustWords = input.content.wordsToUse ?: emptyList(),
+                    nextId = "0"
                 )
             }
             ContentType.WITH_ANSWER_VARIANTS -> {

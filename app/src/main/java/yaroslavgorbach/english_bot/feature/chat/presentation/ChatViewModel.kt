@@ -18,6 +18,7 @@ import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
 import yaroslavgorbach.english_bot.feature.chat.model.ChatState
 import yaroslavgorbach.english_bot.feature.chat.model.ChatUiMessage
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -85,9 +86,11 @@ class ChatViewModel @Inject constructor(
     private suspend fun saveMyAnswer(text: String) {
         chatRepo.saveMessage(
             ChatMessage.Text(
+                id = UUID.randomUUID().toString(),
                 botName = botName,
                 text = text,
-                type = MessageType.ME
+                type = MessageType.ME,
+                nextId = "0"
             )
         )
     }
@@ -130,7 +133,7 @@ class ChatViewModel @Inject constructor(
             ChatActions.SentMessage -> {
                 viewModelScope.launch {
                     val lastFromBot = state.value.messages.findLast { it.type == MessageType.BOT }
-                    botEngine.answer(state.value.typedValue, lastFromBot?.id ?: 0)
+                    botEngine.answer(state.value.typedValue, lastFromBot?.id ?: "0")
                 }
             }
             is ChatActions.ChooseAnswerVariant -> {

@@ -23,7 +23,7 @@ fun MessageFromMeUi(message: ChatMessage) {
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
-                .padding(start = 50.dp, end = 16.dp, top = 12.dp)
+                .padding(start = 50.dp, end = 16.dp)
                 .align(CenterEnd),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             shape = RoundedCornerShape(
@@ -37,17 +37,15 @@ fun MessageFromMeUi(message: ChatMessage) {
             when (message) {
                 is ChatMessage.Text -> {
                     Text(
-                        style = MaterialTheme.typography.displayMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         text = message.text,
                         modifier = Modifier.padding(12.dp),
                         color = Color.White,
                         fontSize = 16.sp
                     )
                 }
-                is ChatMessage.TextWithMustWords -> TODO()
-                is ChatMessage.WithVariants -> TODO()
+                else -> error("Unsupported message type")
             }
-
         }
     }
 }
@@ -58,9 +56,9 @@ fun MessageFromMePreview() {
     MaterialTheme {
         MessageFromMeUi(
             ChatMessage.Text(
-                1,
+                "1",
                 BotName.GAME_OF_THRONES,
-                0,
+                "0",
                 "Test",
                 MessageType.ME
             )

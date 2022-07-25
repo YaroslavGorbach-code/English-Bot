@@ -8,96 +8,92 @@ class GameOfThronesFactory : BotQuestionsFactory {
     override fun create(): List<ChatMessage> {
         return listOf(
             ChatMessage.WithVariants(
-                id = 0,
+                id = "1",
                 botName = BotName.GAME_OF_THRONES,
-                text = "Have you watched game of thrones?",
+                text = "Did you watch Game of Thrones?",
                 variants = listOf(
-                    ChatMessage.WithVariants.Variant("Yes", 1),
-                    ChatMessage.WithVariants.Variant("No", 4),
+                    ChatMessage.WithVariants.Variant("Yes", "2"),
+                    ChatMessage.WithVariants.Variant("No", "-1000"),
+                )
+            ),
+            ChatMessage.TextWithMustWords(
+                id = "2",
+                botName = BotName.GAME_OF_THRONES,
+                nextId = "3",
+                text = "What is this TV series about?",
+                mustWords = listOf(
+                    "dragons",
+                    "winter",
+                    "White Walker",
+                    "throne",
+                    "Westeros",
+                    "seven kingdoms"
                 )
             ),
             ChatMessage.Text(
-                id = 1,
+                id = "3",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 2, "Tell me what this series is about?",
+                nextId = "4",
+                text = "What do you think is special about Game of Thrones?",
+                type = MessageType.BOT
+            ),
+            ChatMessage.TextWithMustWords(
+                id = "4",
+                botName = BotName.GAME_OF_THRONES,
+                nextId = "5",
+                text = "Tell me about your favorite house (family) from the series",
+                mustWords = listOf(
+                    "Targaryen",
+                    "Lannisters",
+                    "Starks",
+                    "Tyrell",
+                    "Martell",
+                    "Greyjoys"
+                )
+            ),
+            ChatMessage.Text(
+                id = "5",
+                botName = BotName.GAME_OF_THRONES,
+                nextId = "6",
+                text = "Which character from the show is your favorite and why?",
                 type = MessageType.BOT
             ),
             ChatMessage.Text(
-                id = 2,
+                id = "6",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 3, "Would you like to live in that world",
+                nextId = "7",
+                text = "What do you think about the phrase \"When you play " +
+                        "the game of thrones you win or you die. There is no middle ground.\"?",
                 type = MessageType.BOT
             ),
             ChatMessage.Text(
-                id = 3,
+                id = "7",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 4, "Why explain in details",
+                nextId = "8",
+                text = "What do you think about the phrase " +
+                        "\"Money buys a man's silence for a time. A bolt in the heart buys it forever.\" ?",
                 type = MessageType.BOT
             ),
             ChatMessage.Text(
-                id = 4,
+                id = "8",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 5, "Do you like it?",
+                nextId = "9",
+                text = "What do you think about the phrase" +
+                        " \"There's a beast in every man, and it stirs when you put a sword in his hand.\" ?",
                 type = MessageType.BOT
             ),
             ChatMessage.Text(
-                id = 5,
+                id = "9",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 6, "Do you like it?",
+                nextId = "10",
+                text = "who was called Dwarf in the series? Tell me more about that character",
                 type = MessageType.BOT
             ),
             ChatMessage.Text(
-                id = 6,
+                id = "10",
                 botName = BotName.GAME_OF_THRONES,
-                nextId = 7, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 7,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 8, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 8,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 9, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 9,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 10, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 10,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 11, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 11,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 12, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 12,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 13, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 13,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 14, "Do you like it?",
-                type = MessageType.BOT
-            ),
-            ChatMessage.Text(
-                id = 14,
-                botName = BotName.GAME_OF_THRONES,
-                nextId = 15, "Do you like it?",
+                nextId = "11",
+                text = "who was called Bastard in the series? Tell me more about that character",
                 type = MessageType.BOT
             ),
         )

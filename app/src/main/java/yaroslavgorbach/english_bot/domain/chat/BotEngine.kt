@@ -1,5 +1,6 @@
 package yaroslavgorbach.english_bot.domain.chat
 
+import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,17 +24,23 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
 
     private val questions: List<ChatMessage> = botQuestionsFactory.create()
 
-    suspend fun answer(answer: String, questionId: Int) {
+    suspend fun answer(answer: String, questionId: String) {
         _answer.emit(answer)
         think(TIME_TO_THINK)
         when (val currentQuestion = questions.find { it.id == questionId }) {
             is ChatMessage.Text -> {
+                Log.i("dsdsds", "text ${questionId}")
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])
             }
             is ChatMessage.TextWithMustWords -> {
+                Log.i("dsdsds", "text with must ${questionId}")
+                Log.i("dsdsds", "text with must next id ${currentQuestion.nextId}")
+                Log.i("dsdsds", questions.toString())
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])
             }
             is ChatMessage.WithVariants -> {
+                Log.i("dsdsds", "text with wariants ${questionId}")
+
                 val nextId = currentQuestion.variants.first { it.text == answer }.nextQuestionId
                 val nextQuestion = questions[questions.indexOfFirst { it.id == nextId }]
                 _question.emit(nextQuestion)

@@ -29,7 +29,7 @@ class ChatRepoImp(
         }
     }
 
-    override suspend fun clearVariants(messageId: Int) {
+    override suspend fun clearVariants(messageId: String) {
         withContext(Dispatchers.IO) {
             localDataSource.clearVariants(messageId)
         }

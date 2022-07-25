@@ -26,7 +26,7 @@ import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 import yaroslavgorbach.english_bot.domain.chat.model.MessageType
-import yaroslavgorbach.english_bot.feature.common.ui.theme.ThinkAnimationColor
+import yaroslavgorbach.english_bot.feature.common.ui.theme.extraLightGray
 import yaroslavgorbach.english_bot.feature.common.ui.theme.messageTextColor
 import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 
@@ -35,14 +35,14 @@ import yaroslavgorbach.english_bot.feature.common.ui.theme.subtitleColor
 fun MessageFromBotUi(
     message: ChatMessage,
     botName: BotName,
-    onVariantChosen: (String, Int) -> Unit
+    onVariantChosen: (variant: String, id: String) -> Unit
 ) {
     Column {
         Card(
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
-                .padding(end = 50.dp, start = 16.dp, top = 12.dp),
+                .padding(end = 50.dp, start = 16.dp, top = 14.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             shape = RoundedCornerShape(
                 topStart = 50f,
@@ -59,7 +59,10 @@ fun MessageFromBotUi(
                         )
                     }
                     is ChatMessage.TextWithMustWords -> {
-
+                        Column {
+                            MessageText(message = message.text)
+                            WordsToUse(words = message.mustWordsString)
+                        }
                     }
                     is ChatMessage.WithVariants -> {
                         Column {
@@ -146,7 +149,7 @@ private fun Thinking(modifier: Modifier = Modifier) {
                 .align(CenterVertically)
                 .graphicsLayer { translationY = -value * distance }
                 .background(
-                    color = ThinkAnimationColor(),
+                    color = extraLightGray(),
                     shape = CircleShape
                 ))
 
@@ -186,12 +189,30 @@ private fun Variants(
 @Composable
 private fun MessageText(modifier: Modifier = Modifier, message: String) {
     Text(
-        style = MaterialTheme.typography.displayMedium,
+        style = MaterialTheme.typography.bodyMedium,
         text = message,
         modifier = modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp),
         color = messageTextColor(),
         fontSize = 16.sp
     )
+}
+
+@Composable
+private fun WordsToUse(words: String) {
+    Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)) {
+        Text(
+            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(id = R.string.use_words_text),
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 14.sp
+        )
+        Text(
+            style = MaterialTheme.typography.bodySmall,
+            text = words,
+            color = subtitleColor(),
+            fontSize = 12.sp
+        )
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -200,9 +221,9 @@ fun PuzzlePreview() {
     MaterialTheme {
         MessageFromBotUi(
             message = ChatMessage.Text(
-                1,
+                "1",
                 BotName.GAME_OF_THRONES,
-                0,
+                "0",
                 "test",
                 MessageType.BOT
             ),

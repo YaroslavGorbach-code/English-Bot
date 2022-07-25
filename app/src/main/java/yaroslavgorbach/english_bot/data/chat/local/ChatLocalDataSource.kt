@@ -8,7 +8,7 @@ import yaroslavgorbach.english_bot.data.common.model.BotName
 interface ChatLocalDataSource {
     fun getMessages(name: BotName): Flow<List<MessageEntity>>
     suspend fun saveMessage(messageEntity: MessageEntity)
-    suspend fun clearVariants(messageId: Int)
+    suspend fun clearVariants(messageId: String)
 }
 
 class ChatLocalDataSourceImp(private val chatDao: ChatDao) : ChatLocalDataSource {
@@ -20,7 +20,7 @@ class ChatLocalDataSourceImp(private val chatDao: ChatDao) : ChatLocalDataSource
         return chatDao.insertMessage(messageEntity)
     }
 
-    override suspend fun clearVariants(messageId: Int) {
+    override suspend fun clearVariants(messageId: String) {
         return chatDao.clearVariants(messageId)
     }
 }

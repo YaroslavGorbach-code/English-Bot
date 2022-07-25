@@ -16,7 +16,7 @@ fun subtitleColor(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {
 }
 
 @Composable
-fun ThinkAnimationColor(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {
+fun extraLightGray(isDarkTheme: Boolean = isSystemInDarkTheme()): Color {
     return if (isDarkTheme) ExtraLightGray else ExtraLightGray
 }
 
