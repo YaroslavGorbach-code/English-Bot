@@ -1,6 +1,5 @@
 package yaroslavgorbach.english_bot.feature.common.ui
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

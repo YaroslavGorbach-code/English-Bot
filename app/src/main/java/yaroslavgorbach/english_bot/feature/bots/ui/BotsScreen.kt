@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.insets.statusBarsPadding
 import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.data.common.model.BotName
 import yaroslavgorbach.english_bot.feature.bots.model.BotsAction
@@ -51,7 +52,12 @@ internal fun BotsScreen(
     navigateToChat: (name: BotName) -> Unit
 ) {
     state.message?.let { message -> }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
+    ) {
         Title(
             text = stringResource(id = R.string.available_bots),
             modifier = Modifier.fillMaxWidth()

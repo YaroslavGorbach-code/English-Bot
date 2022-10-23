@@ -11,9 +11,9 @@ abstract class BaseViewModel<State, Action, Message>(initialState: State) : View
 
     protected val uiMessageManager: UiMessageManager<Message> = UiMessageManager()
 
-    protected val pendingActions = MutableSharedFlow<Action>()
-
     protected val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
+
+    private val pendingActions = MutableSharedFlow<Action>()
 
     val state: StateFlow<State>
         get() = _state
@@ -42,5 +42,5 @@ abstract class BaseViewModel<State, Action, Message>(initialState: State) : View
 
     protected abstract fun onNewAction(action: Action)
 
-    abstract fun onNewUiMessage(message: UiMessage<Message>)
+    protected abstract fun onNewUiMessage(message: UiMessage<Message>)
 }

@@ -1,4 +1,4 @@
-package yaroslavgorbach.english_bot.data.chat
+package yaroslavgorbach.english_bot.domain.chat
 
 import kotlinx.coroutines.flow.Flow
 import yaroslavgorbach.english_bot.data.common.model.BotName

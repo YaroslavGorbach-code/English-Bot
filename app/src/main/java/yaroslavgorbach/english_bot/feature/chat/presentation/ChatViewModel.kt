@@ -8,11 +8,11 @@ import kotlinx.coroutines.launch
 import yaroslavgorbach.english_bot.BOT_NAME_ARG
 import yaroslavgorbach.english_bot.base.BaseViewModel
 import yaroslavgorbach.english_bot.core.UiMessage
-import yaroslavgorbach.english_bot.data.chat.ChatRepo
+import yaroslavgorbach.english_bot.data.chat.ChatInterractorImpl
 import yaroslavgorbach.english_bot.data.common.model.BotName
-import yaroslavgorbach.english_bot.domain.chat.BotEngine
+import yaroslavgorbach.english_bot.domain.chat.ChatInterractor
+import yaroslavgorbach.english_bot.domain.chat.ChatRepo
 import yaroslavgorbach.english_bot.domain.chat.factory.BotQuestionsAbstractFactory
-import yaroslavgorbach.english_bot.domain.chat.factory.BotQuestionsFactory
 import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
@@ -23,19 +23,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
+    savedState: SavedStateHandle,
     private val chatRepo: ChatRepo,
-    savedState: SavedStateHandle
+    private val chatInterractor: ChatInterractor
 ) : BaseViewModel<ChatState, ChatActions, ChatUiMessage>(initialState = ChatState.Empty) {
 
     private val botName: BotName = savedState[BOT_NAME_ARG]!!
-
-    private val botQuestionsAbstractFactory: BotQuestionsAbstractFactory
-        get() = BotQuestionsAbstractFactory()
-
-    private val botQuestionsFactory: BotQuestionsFactory
-        get() = botQuestionsAbstractFactory.create(botName)
-
-    private val botEngine: BotEngine = BotEngine(botQuestionsFactory)
 
     init {
         observeNewBotQuestion()
@@ -45,9 +38,36 @@ class ChatViewModel @Inject constructor(
         getMessages()
     }
 
+    override fun onNewAction(action: ChatActions) {
+        when (action) {
+            is ChatActions.TypeText -> {
+                _state.update { state ->
+                    state.copy(typedValue = action.text)
+                }
+            }
+            ChatActions.SentMessage -> {
+                viewModelScope.launch {
+                    val lastFromBot = state.value.messages.findLast { it.type == MessageType.BOT }
+                    chatInterractor.answer(state.value.typedValue, lastFromBot?.id ?: "0")
+                }
+            }
+            is ChatActions.ChooseAnswerVariant -> {
+                viewModelScope.launch {
+                    chatInterractor.answer(action.text, action.questionId)
+                    chatRepo.clearVariants(action.questionId)
+                }
+            }
+            ChatActions.TextInputClicked -> {
+                viewModelScope.launch {
+                    uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
+                }
+            }
+        }
+    }
+
     private fun observeNewBotQuestion() {
         viewModelScope.launch {
-            botEngine.question.collect { newQuestion ->
+            chatInterractor.question.collect { newQuestion ->
                 chatRepo.saveMessage(newQuestion)
             }
         }
@@ -55,7 +75,7 @@ class ChatViewModel @Inject constructor(
 
     private fun observeMyAnswers() {
         viewModelScope.launch {
-            botEngine.answer.collect { answer ->
+            chatInterractor.answer.collect { answer ->
                 saveMyAnswer(answer)
             }
         }
@@ -63,7 +83,7 @@ class ChatViewModel @Inject constructor(
 
     private fun observeBotThinking() {
         viewModelScope.launch {
-            botEngine.isThinking.collect { isThinking ->
+            chatInterractor.isThinking.collect { isThinking ->
                 if (isThinking) {
                     _state.emit(
                         state.value.copy(
@@ -78,6 +98,7 @@ class ChatViewModel @Inject constructor(
                             messages = state.value.messages.filterNot { it is ChatMessage.Loading }
                         )
                     )
+                    uiMessageManager.emitMessage(UiMessage(ChatUiMessage.ScrollToPosition(state.value.messages.size)))
                 }
             }
         }
@@ -119,29 +140,7 @@ class ChatViewModel @Inject constructor(
 
     private suspend fun startConversationIfNeeded(hasHeed: Boolean) {
         if (hasHeed) {
-            botEngine.startConversation()
-        }
-    }
-
-    override fun onNewAction(action: ChatActions) {
-        when (action) {
-            is ChatActions.TypeText -> {
-                _state.update { state ->
-                    state.copy(typedValue = action.text)
-                }
-            }
-            ChatActions.SentMessage -> {
-                viewModelScope.launch {
-                    val lastFromBot = state.value.messages.findLast { it.type == MessageType.BOT }
-                    botEngine.answer(state.value.typedValue, lastFromBot?.id ?: "0")
-                }
-            }
-            is ChatActions.ChooseAnswerVariant -> {
-                viewModelScope.launch {
-                    botEngine.answer(action.text, action.questionId)
-                    chatRepo.clearVariants(action.questionId)
-                }
-            }
+            chatInterractor.startConversation()
         }
     }
 }

@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import yaroslavgorbach.english_bot.core.Mapper
 import yaroslavgorbach.english_bot.data.BotsDatabase
-import yaroslavgorbach.english_bot.data.chat.ChatRepo
+import yaroslavgorbach.english_bot.domain.chat.ChatRepo
 import yaroslavgorbach.english_bot.data.chat.ChatRepoImp
 import yaroslavgorbach.english_bot.data.chat.dao.ChatDao
 import yaroslavgorbach.english_bot.data.chat.local.ChatLocalDataSource

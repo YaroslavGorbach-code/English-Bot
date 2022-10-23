@@ -1,7 +1,7 @@
 package yaroslavgorbach.english_bot.feature.chat.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.insets.statusBarsPadding
 import yaroslavgorbach.english_bot.R
 import yaroslavgorbach.english_bot.domain.chat.model.MessageType
 import yaroslavgorbach.english_bot.feature.chat.model.ChatActions
@@ -76,6 +77,8 @@ internal fun ChatScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .navigationBarsPadding()
+            .statusBarsPadding()
     ) {
         Toolbar(title = stringResource(id = state.botName.resId) + " Bot", onBack = { onBack() })
         Subtitle(
@@ -86,10 +89,11 @@ internal fun ChatScreen(
         )
         LazyColumn(
             state = chatScrollState,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .weight(1f)
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(top = 16.dp)
         ) {
+            item { Spacer(modifier = Modifier.height(12.dp)) }
+
             items(state.messages, key = { item -> item.id }) { message ->
                 when (message.type) {
                     MessageType.BOT -> {
@@ -102,6 +106,7 @@ internal fun ChatScreen(
                     }
                     MessageType.ME -> {
                         MessageFromMeUi(message = message)
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
             }
@@ -121,6 +126,7 @@ private fun InputField(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .imePadding()
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             TextField(
@@ -129,12 +135,11 @@ private fun InputField(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 ),
-                placeholder = {
-                    Text(text = "Type your answer...")
-                },
+                placeholder = { Text(text = "Type your answer...") },
                 onValueChange = { text -> actioner(ChatActions.TypeText(text)) },
                 value = state.typedValue,
                 modifier = Modifier
+                    .clickable { actioner(ChatActions.TextInputClicked) }
                     .align(CenterVertically)
                     .weight(1f)
             )

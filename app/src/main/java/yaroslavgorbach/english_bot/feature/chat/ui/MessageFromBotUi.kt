@@ -42,7 +42,7 @@ fun MessageFromBotUi(
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
-                .padding(end = 50.dp, start = 16.dp, top = 14.dp),
+                .padding(end = 50.dp, start = 16.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             shape = RoundedCornerShape(
                 topStart = 50f,

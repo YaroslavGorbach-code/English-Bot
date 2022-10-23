@@ -8,6 +8,7 @@ import yaroslavgorbach.english_bot.core.Mapper
 import yaroslavgorbach.english_bot.data.chat.local.ChatLocalDataSource
 import yaroslavgorbach.english_bot.data.chat.local.model.MessageEntity
 import yaroslavgorbach.english_bot.data.common.model.BotName
+import yaroslavgorbach.english_bot.domain.chat.ChatRepo
 import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 
 class ChatRepoImp(

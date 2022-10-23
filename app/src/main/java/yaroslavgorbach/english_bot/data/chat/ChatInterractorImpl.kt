@@ -1,46 +1,44 @@
-package yaroslavgorbach.english_bot.domain.chat
+package yaroslavgorbach.english_bot.data.chat
 
-import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import yaroslavgorbach.english_bot.domain.chat.ChatInterractor
 import yaroslavgorbach.english_bot.domain.chat.factory.BotQuestionsFactory
 import yaroslavgorbach.english_bot.domain.chat.model.ChatMessage
 
-class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
+class ChatInterractorImpl(botQuestionsFactory: BotQuestionsFactory) : ChatInterractor {
 
-    companion object{
+    companion object {
         private const val TIME_TO_THINK = 2000L
     }
 
     private val _question = MutableSharedFlow<ChatMessage>(replay = 0)
-    val question: SharedFlow<ChatMessage> = _question
+    override val question: SharedFlow<ChatMessage> = _question
 
     private val _answer = MutableSharedFlow<String>(replay = 0)
-    val answer: SharedFlow<String> = _answer
+    override val answer: SharedFlow<String> = _answer
 
     private val _isThinking = MutableSharedFlow<Boolean>(replay = 0)
-    val isThinking: SharedFlow<Boolean> = _isThinking
+    override val isThinking: SharedFlow<Boolean> = _isThinking
 
     private val questions: List<ChatMessage> = botQuestionsFactory.create()
 
-    suspend fun answer(answer: String, questionId: String) {
+    override suspend fun answer(answer: String, questionId: String) {
         _answer.emit(answer)
         think(TIME_TO_THINK)
+        emitNewQuestion(questionId, answer)
+    }
+
+    private suspend fun emitNewQuestion(questionId: String, answer: String) {
         when (val currentQuestion = questions.find { it.id == questionId }) {
             is ChatMessage.Text -> {
-                Log.i("dsdsds", "text ${questionId}")
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])
             }
             is ChatMessage.TextWithMustWords -> {
-                Log.i("dsdsds", "text with must ${questionId}")
-                Log.i("dsdsds", "text with must next id ${currentQuestion.nextId}")
-                Log.i("dsdsds", questions.toString())
                 _question.emit(questions[questions.indexOfFirst { it.id == currentQuestion.nextId }])
             }
             is ChatMessage.WithVariants -> {
-                Log.i("dsdsds", "text with wariants ${questionId}")
-
                 val nextId = currentQuestion.variants.first { it.text == answer }.nextQuestionId
                 val nextQuestion = questions[questions.indexOfFirst { it.id == nextId }]
                 _question.emit(nextQuestion)
@@ -51,13 +49,13 @@ class BotEngine(botQuestionsFactory: BotQuestionsFactory) {
         }
     }
 
-    suspend fun startConversation() {
+    override suspend fun startConversation() {
         think(TIME_TO_THINK)
         _question.emit(questions[0])
     }
 
-    private suspend fun think(time: Long){
-        delay(300)
+    private suspend fun think(time: Long) {
+         delay(300)
         _isThinking.emit(true)
         delay(time)
         _isThinking.emit(false)
